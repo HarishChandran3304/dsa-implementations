@@ -3,42 +3,41 @@
 #include <stdbool.h>
 
 
-int q[100];
-int front = 0;
-int rear = 0;
+int stack[100];
+int top = -1;
 
 bool isEmpty() {
-    return front == rear;
+    return top == -1;
 }
 
-void enqueue(int x) {
-    q[rear++] = x;
+void push(int x) {
+    stack[++top] = x;
 }
 
-int dequeue() {
-    return q[front++];
+int pop() {
+    return stack[top--];
 }
 
-void printQueue(int front, int rear) {
-    for (int i = front; i < rear; i++) printf("%d ", q[i]);
+void printStack() {
+    for (int i = 0; i <= top; i++) printf("%d ", stack[i]);
     printf("\n");
 }
 
 
-void BFS(int** graph, int start, int v, int e) {
+void DFS(int** graph, int start, int v, int e) {
     int visited[v];
     for (int i = 0; i < v; i++) visited[i] = 0;
 
-    enqueue(start);
+    push(start);
     visited[start] = 1;
 
     while (!isEmpty()) {
-        int node = dequeue();
+        int node = pop();
         printf("%d ", node);
 
         for (int i = 0; i < v; i++) {
             if (graph[node][i] == 1 && visited[i] == 0) {
-                enqueue(i);
+                push(i);
                 visited[i] = 1;
             }
         }
@@ -72,7 +71,7 @@ int main() {
     printf("Enter the starting vertex: ");
     scanf("%d", &start);
 
-    BFS(graph, start, v, e);
+    DFS(graph, start, v, e);
     printf("\n");
 
     return 0;
